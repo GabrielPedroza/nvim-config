@@ -94,7 +94,7 @@ vim.g.maplocalleader = ' '
 vim.api.nvim_set_keymap('n', '<leader>e', ':Ex<CR>', { noremap = true, silent = true })
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -254,7 +254,6 @@ require('lazy').setup({
     },
   },
 
-  -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
   --
@@ -269,14 +268,67 @@ require('lazy').setup({
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
+      on_attach = function(bufnr)
+        -- Track the last action (stage or reset)
+        local last_action = nil
+        local gs = package.loaded.gitsigns
+
+        -- Helper function to repeat the last action
+        local function repeat_last_action()
+          if last_action == 'prev_hunk' then
+            gs.prev_hunk()
+          elseif last_action == 'next_hunk' then
+            gs.next_hunk()
+          end
+        end
+
+        vim.keymap.set('n', '<leader>gp', function()
+          -- Set the highlight color before previewing the hunk
+          vim.api.nvim_set_hl(0, 'DiffDelete', { fg = '#dcd7ba', bg = '#c4746e', bold = true })
+          vim.api.nvim_set_hl(0, 'DiffAdd', { fg = '#dcd7ba', bg = '#76946a', bold = true })
+
+          vim.cmd 'Gitsigns preview_hunk'
+        end, { buffer = bufnr })
+
+        vim.keymap.set('n', '<leader>gb', ':Gitsigns toggle_current_line_blame<cr>', { buffer = bufnr })
+
+        vim.keymap.set('n', '<leader>nh', function()
+          vim.cmd 'Gitsigns next_hunk'
+          last_action = 'next_hunk'
+        end, { buffer = bufnr })
+
+        vim.keymap.set('n', '<leader>ph', function()
+          vim.cmd 'Gitsigns prev_hunk'
+          last_action = 'prev_hunk'
+        end, { buffer = bufnr })
+
+        -- Optionally repeat the last action on the previous hunk
+        vim.keymap.set('n', 'N', function()
+          repeat_last_action()
+        end, { buffer = bufnr })
+      end,
     },
+  },
+
+  {
+    'tpope/vim-fugitive',
+  },
+
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+      '3rd/image.nvim', -- Image support in preview window: See `# Preview Mode` for more information
+    },
+
+    vim.keymap.set('n', '<leader>ts', ':Neotree show<cr>', { desc = 'Show Neotree' }),
+    vim.keymap.set('n', '<leader>tc', ':Neotree close<cr>', { desc = 'Close Neotree' }),
+    vim.keymap.set('n', '<leader>tf', ':Neotree float<cr>', { desc = 'Float Neotree' }),
+    vim.keymap.set('n', '<leader>tF', ':Neotree focus<cr>', { desc = 'Focus Neotree' }),
+    vim.keymap.set('n', '<leader>tt', ':Neotree toggle<cr>', { desc = 'Toggle Neotree' }),
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -342,7 +394,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons' },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -912,7 +964,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.lazygit',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
