@@ -93,6 +93,10 @@ vim.g.maplocalleader = ' '
 -- Map <leader>e to open the explorer
 vim.api.nvim_set_keymap('n', '<leader>e', ':Ex<CR>', { noremap = true, silent = true })
 
+-- Move word by word using Option + Arrow keys in Insert mode
+vim.keymap.set('i', '<A-Left>', '<C-Left>', { desc = 'Move to previous word in Insert mode' })
+vim.keymap.set('i', '<A-Right>', '<C-Right>', { desc = 'Move to next word in Insert mode' })
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
