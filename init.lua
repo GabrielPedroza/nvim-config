@@ -258,12 +258,28 @@ require('lazy').setup({
     },
   },
 
+  -- adding some styling for the tabs. i didn't like the default ones
   {
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
     ---@module "ibl"
     opts = {},
   },
+
+  -- making the status bar in the bottom look prettier
+  {
+    'nvim-lualine/lualine.nvim',
+    config = function()
+      require('lualine').setup {
+        options = {
+          theme = 'horizon',
+          section_separators = '',
+          component_separators = '',
+        },
+      }
+    end,
+  },
+
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
   --
