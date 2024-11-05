@@ -63,4 +63,9 @@ return {
       },
     },
   },
+  vim.keymap.set('n', '<leader>ts', ':Neotree show<cr>', { desc = 'Show Neotree' }),
+  vim.keymap.set('n', '<leader>tc', ':Neotree close<cr>', { desc = 'Close Neotree' }),
+  vim.keymap.set('n', '<leader>tf', ':Neotree float<cr>', { desc = 'Float Neotree' }),
+  vim.keymap.set('n', '<leader>tF', ':Neotree focus<cr>', { desc = 'Focus Neotree' }),
+  vim.keymap.set('n', '<leader>tt', ':Neotree toggle<cr>', { desc = 'Toggle Neotree' }),
 }

@@ -263,7 +263,11 @@ require('lazy').setup({
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
     ---@module "ibl"
-    opts = {},
+    opts = {
+      indent = {
+        char = '·',
+      },
+    },
   },
 
   -- making the status bar in the bottom look prettier
@@ -339,22 +343,22 @@ require('lazy').setup({
     'tpope/vim-fugitive',
   },
 
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-      '3rd/image.nvim', -- Image support in preview window: See `# Preview Mode` for more information
-    },
-
-    vim.keymap.set('n', '<leader>ts', ':Neotree show<cr>', { desc = 'Show Neotree' }),
-    vim.keymap.set('n', '<leader>tc', ':Neotree close<cr>', { desc = 'Close Neotree' }),
-    vim.keymap.set('n', '<leader>tf', ':Neotree float<cr>', { desc = 'Float Neotree' }),
-    vim.keymap.set('n', '<leader>tF', ':Neotree focus<cr>', { desc = 'Focus Neotree' }),
-    vim.keymap.set('n', '<leader>tt', ':Neotree toggle<cr>', { desc = 'Toggle Neotree' }),
-  },
+  -- {
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'v3.x',
+  --   dependencies = {
+  --     -- 'nvim-lua/plenary.nvim',
+  --     -- 'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+  --     -- 'MunifTanjim/nui.nvim',
+  --     -- '3rd/image.nvim', -- Image support in preview window: See `# Preview Mode` for more information
+  --   },
+  --
+  --   vim.keymap.set('n', '<leader>ts', ':Neotree show<cr>', { desc = 'Show Neotree' }),
+  --   vim.keymap.set('n', '<leader>tc', ':Neotree close<cr>', { desc = 'Close Neotree' }),
+  --   vim.keymap.set('n', '<leader>tf', ':Neotree float<cr>', { desc = 'Float Neotree' }),
+  --   vim.keymap.set('n', '<leader>tF', ':Neotree focus<cr>', { desc = 'Focus Neotree' }),
+  --   vim.keymap.set('n', '<leader>tt', ':Neotree toggle<cr>', { desc = 'Toggle Neotree' }),
+  -- },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -673,6 +677,7 @@ require('lazy').setup({
         gopls = {},
         pyright = {},
         -- rust_analyzer = {},
+        -- astro = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
